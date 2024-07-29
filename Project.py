@@ -18,7 +18,9 @@ class Car:
         self.rent_end_date: Optional[datetime] = None
 
     def __str__(self):
-        return f"Car category= {self.category}, color= {self.color}, seats= {self.seats}, per_day_cost= {self.per_day_cost}, is_rented= {self.is_rented}, rent_start_date= {self.rent_start_date}, rent_end_date= {self.rent_end_date})"
+        return (f"Car(category= {self.category}, color= {self.color}, seats= {self.seats}, "
+                f"per_day_cost= {self.per_day_cost}, is_rented= {self.is_rented}, "
+                f"rent_start_date= {self.rent_start_date}, rent_end_date= {self.rent_end_date})")
 
 class CarRentalSystem:
     def __init__(self):
@@ -51,46 +53,40 @@ class CarRentalSystem:
         return False
 
 class Admin:
-    def __init__(self, rental_system: CarRentalSystem):
-        self.rental_system = rental_system
-
     def add_car(self, car: Car):
-        self.rental_system.add_car(car)
+        rental_system.add_car(car)
 
     def delete_car(self, car: Car):
-        self.rental_system.delete_car(car)
+        rental_system.delete_car(car)
 
 class User:
-    def __init__(self, rental_system: CarRentalSystem):
-        self.rental_system = rental_system
-
     def view_all_cars(self):
-        self.rental_system.view_all_cars()
+        rental_system.view_all_cars()
 
     def book_car(self, num_people: int, start_date: datetime, end_date: datetime):
-        available = self.rental_system.cars_available(num_people, start_date, end_date)
+        available = rental_system.cars_available(num_people, start_date, end_date)
         if available:
             car = available[0]
-            self.rental_system.book_car(car, start_date, end_date)
+            rental_system.book_car(car, start_date, end_date)
             print(f"Car booked: {car}")
         else:
             print("No cars available.")
 
-#Output
+# Initializing the CarREntalSystem class to rental rental_system as an instance.
+rental_system = CarRentalSystem()
+
 
 if __name__ == "__main__":
-    system = CarRentalSystem()
-    admin = Admin(system)
-    user = User(system)
+    admin = Admin()
+    user = User()
 
-# Admin
-    # Inputs from admin
-    car1 = Car(category=CarCategory.SEDAN, color="Urban Titanium", seats= 4, per_day_cost=50000.0)
-    car2 = Car(category=CarCategory.SUV, color="Midnight Blue", seats= 7, per_day_cost=80000.0)
-    car3 = Car(category=CarCategory.HATCHBACK, color="Pearl White", seats= 5, per_day_cost=35000.0)
-    car4 = Car(category=CarCategory.SEDAN, color="Black Pearl", seats= 4, per_day_cost=30000.0)
-    car5 = Car(category=CarCategory.HATCHBACK, color="Gun Metallic", seats= 5, per_day_cost=35000.0)
-    car6 = Car(category=CarCategory.SUV, color="Lunar Silver", seats= 7, per_day_cost=80000.0)
+    # Admin adds cars
+    car1 = Car(category=CarCategory.SEDAN, color="Urban Titanium", seats=4, per_day_cost=50000.0)
+    car2 = Car(category=CarCategory.SUV, color="Midnight Blue", seats=7, per_day_cost=80000.0)
+    car3 = Car(category=CarCategory.HATCHBACK, color="Pearl White", seats=5, per_day_cost=35000.0)
+    car4 = Car(category=CarCategory.SEDAN, color="Black Pearl", seats=4, per_day_cost=30000.0)
+    car5 = Car(category=CarCategory.HATCHBACK, color="Gun Metallic", seats=5, per_day_cost=35000.0)
+    car6 = Car(category=CarCategory.SUV, color="Lunar Silver", seats=7, per_day_cost=80000.0)
     admin.add_car(car1)
     admin.add_car(car2)
     admin.add_car(car3)
@@ -98,10 +94,10 @@ if __name__ == "__main__":
     admin.add_car(car5)
     admin.add_car(car6)
 
-# User
-   # Viewing all cars
+    # User views all cars
     print("All cars in the system:")
     user.view_all_cars()
-   #Printing the first available car from the list according to the criteria set by the user.
+
+    # User books a car
     print("\nBooking a car:")
     user.book_car(num_people=7, start_date=datetime(2024, 8, 1), end_date=datetime(2024, 8, 5))
