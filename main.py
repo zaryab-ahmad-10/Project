@@ -1,25 +1,62 @@
 if __name__ == "__main__":
-    admin = Admin()
-    user = User()
+    system = CarRentalSystem()
+    
+    user_type = input("Are you an Admin or a User? (Admin/User): ")
 
-    # Admin adds cars
-    car1 = Car(category=CarCategory.SEDAN, color="Urban Titanium", seats=4, per_day_cost=50000.0)
-    car2 = Car(category=CarCategory.SUV, color="Midnight Blue", seats=7, per_day_cost=80000.0)
-    car3 = Car(category=CarCategory.HATCHBACK, color="Pearl White", seats=5, per_day_cost=35000.0)
-    car4 = Car(category=CarCategory.SEDAN, color="Black Pearl", seats=4, per_day_cost=30000.0)
-    car5 = Car(category=CarCategory.HATCHBACK, color="Gun Metallic", seats=5, per_day_cost=35000.0)
-    car6 = Car(category=CarCategory.SUV, color="Lunar Silver", seats=7, per_day_cost=80000.0)
-    admin.add_car(car1)
-    admin.add_car(car2)
-    admin.add_car(car3)
-    admin.add_car(car4)
-    admin.add_car(car5)
-    admin.add_car(car6)
-
-    # User views all cars
-    print("All cars in the system:")
-    user.view_all_cars()
-
-    # User books a car
-    print("\nBooking a car:")
-    user.book_car(num_people=7, start_date=datetime(2024, 8, 1), end_date=datetime(2024, 8, 5))
+    if user_type == "Admin":
+        admin_id = input("Enter Admin ID: ")
+        password = input("Enter Admin Password: ")
+        
+        if authenticate_admin(admin_id, password):
+            admin = Admin(system)
+            print("Admin authenticated successfully.")
+            
+            while True:
+                action = input("Would you like to add or delete a car? (add/delete/exit): ")
+                if action == "add":
+                    category = CarCategory[input("Enter car category (SEDAN/SUV/HATCHBACK): ").upper()]
+                    color = input("Enter car color: ")
+                    license_plate = input("Please enter the license plate number (ABC 123): ")
+                    seats = int(input("Enter number of seats: "))
+                    per_day_cost = float(input("Enter per day cost: "))
+                    car = Car(category=category, color=color, seats=seats, per_day_cost=per_day_cost)
+                    admin.add_car(car)
+                    print("Car added successfully.")
+                elif action == "delete":
+                    license_plate = input("Enter license number of car to delete (ABC 123): ")
+                    for car in system.cars:
+                        if car.license_plate == license_plate:
+                            admin.delete_car(car)
+                            print("Car deleted successfully.")
+                            break
+                    else:
+                        print("Car not found.")
+                elif action == "exit":
+                    break
+                else:
+                    print("Invalid action. Please try again.")
+        else:
+            print("Invalid Admin ID or Password.")
+    
+    elif user_type == "User":
+        user_name = input("Enter your name: ")
+        user_id = input("Enter your User ID: ")
+        user = User(system, user_name, user_id)
+        print(f"Welcome, {user_name}!")
+        
+        while True:
+            action = input("Would you like to view all cars or book a car? (view/book/exit): ")
+            if action == "view":
+                print("All cars in the system:")
+                user.view_all_cars()
+            elif action == "book":
+                num_people = int(input("Enter number of people: "))
+                start_date = datetime.strptime(input("Enter start date (YYYY-MM-DD): "), "%Y-%m-%d")
+                end_date = datetime.strptime(input("Enter end date (YYYY-MM-DD): "), "%Y-%m-%d")
+                user.book_car(num_people, start_date, end_date)
+            elif action == "exit":
+                break
+            else:
+                print("Invalid action. Please try again.")
+    else:
+        print("Invalid user type. Please enter either 'Admin' or 'User'.")

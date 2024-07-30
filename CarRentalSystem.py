@@ -1,6 +1,13 @@
 class CarRentalSystem:
     def __init__(self):
-        self.cars: List[Car] = []
+        self.cars: List[Car] = [
+             Car(category=CarCategory.SEDAN, color="Urban Titanium", seats=4,license_plate="LEA 987", per_day_cost=50000.0),
+                Car(category=CarCategory.SUV, color="Midnight Blue", seats=7,license_plate="LED 867", per_day_cost=80000.0),
+                Car(category=CarCategory.HATCHBACK, color="Pearl White", seats=5,license_plate="ARQ 123", per_day_cost=35000.0),
+                Car(category=CarCategory.SEDAN, color="Black Pearl", seats=4,license_plate="ATD 631" ,per_day_cost=30000.0),
+                Car(category=CarCategory.HATCHBACK, color="Gun Metallic", seats=5,license_plate="LRQ 178", per_day_cost=35000.0),
+                Car(category=CarCategory.SUV, color="Lunar Silver", seats=7,license_plate="ALF 123", per_day_cost=80000.0)
+                ]
 
     def add_car(self, car: Car):
         self.cars.append(car)
@@ -20,10 +27,12 @@ class CarRentalSystem:
                 available.append(car)
         return available
 
-    def book_car(self, car: Car, start_date: datetime, end_date: datetime):
+    def book_car(self, car: Car, start_date: datetime, end_date: datetime, user_name: str, user_id: str):
         if car in self.cars and not car.is_rented:
             car.is_rented = True
             car.rent_start_date = start_date
             car.rent_end_date = end_date
+            car.rented_by = user_name
+            car.renter_id = user_id
             return True
         return False
