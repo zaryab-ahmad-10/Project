@@ -8,7 +8,7 @@ class Car:
         self.is_rented = False
         self.rent_start_date: Optional[datetime] = None
         self.rent_end_date: Optional[datetime] = None
-        self.rented_by: Optional[str] = None
+        self.rented_by: Optional[User] = None
 
     def __str__(self):
         return (f"Car category = {self.category.value}, color = {self.color}, seats = {self.seats}, "
