@@ -26,10 +26,15 @@ class CarRentalSystem:
         self.cars.append(car)
 
     def delete_car(self, license_plate: str):
+        car_deleted = False
         for car in self.cars:
             if car.license_plate == license_plate:
                 self.cars.remove(car)
+                print("Car deleted successfully.")
+                car_deleted = True
                 break
+        if car_deleted == False:
+            print("No Car Found!")
 
     def view_all_cars(self):
         for car in self.cars:
