@@ -64,10 +64,15 @@ class CarRentalSystem:
         self.cars.append(car)
 
     def delete_car(self, license_plate: str):
+        car_deleted = False
         for car in self.cars:
             if car.license_plate == license_plate:
                 self.cars.remove(car)
+                print("Car deleted successfully.")
+                car_deleted = True
                 break
+        if car_deleted == False:
+            print("No Car Found!")
 
     def view_all_cars(self):
         for car in self.cars:
@@ -108,7 +113,7 @@ if __name__ == "__main__":
         password = input("Enter Admin Password: ")
         
         if system.authenticate_admin(user_name, admin_id, password):
-            print(f"Admin authenticated successfully. Welcome Admin: {admin_id}")
+            print(f"Admin authenticated successfully. Welcome! Mr. {user_name}.")
             
             while True:
                 action = input("Would you like to add or delete a car? (add/delete/view/exit): ")
@@ -124,7 +129,6 @@ if __name__ == "__main__":
                 elif action == "delete":
                     license_plate = input("Enter license number of car to delete (ABC 123): ")
                     system.delete_car(license_plate)
-                    print("Car deleted successfully.")
                 elif action == "view":
                     system.view_all_cars()
                 elif action == "exit":
