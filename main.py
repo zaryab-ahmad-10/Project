@@ -1,36 +1,38 @@
 if __name__ == "__main__":
     system = CarRentalSystem()
     
-    user_type = input("Are you an Admin or a User? (Admin/User): ")
+    user_type = int(input("Are you an Admin or a User? (1 for Admin / 2 For User): "))
 
-    if user_type == "Admin":
-        admin_id = input("Enter Admin ID: ")
+    if user_type == 1:
+        admin_id = int(input("Enter Admin ID: "))
         password = input("Enter Admin Password: ")
         
-        if authenticate_admin(admin_id, password):
-            admin = Admin(system)
-            print("Admin authenticated successfully.")
+        if system.authenticate_admin(admin_id, password):
+            print(f"Admin authenticated successfully. Welcome Admin: {admin_id}")
             
             while True:
-                action = input("Would you like to add or delete a car? (add/delete/exit): ")
+                action = input("Would you like to add or delete a car? (add/delete/view/exit): ")
                 if action == "add":
                     category = CarCategory[input("Enter car category (SEDAN/SUV/HATCHBACK): ").upper()]
                     color = input("Enter car color: ")
                     license_plate = input("Please enter the license plate number (ABC 123): ")
                     seats = int(input("Enter number of seats: "))
                     per_day_cost = float(input("Enter per day cost: "))
-                    car = Car(category=category, color=color, seats=seats, per_day_cost=per_day_cost)
-                    admin.add_car(car)
+                    car = Car(category=category, color=color, seats=seats, license_plate=license_plate, per_day_cost=per_day_cost)
+                    system.add_car(car)
                     print("Car added successfully.")
                 elif action == "delete":
                     license_plate = input("Enter license number of car to delete (ABC 123): ")
                     for car in system.cars:
                         if car.license_plate == license_plate:
-                            admin.delete_car(car)
+                            system.delete_car(car)
                             print("Car deleted successfully.")
                             break
                     else:
                         print("Car not found.")
+
+                elif action == "view":
+                    system.view_all_cars()
                 elif action == "exit":
                     break
                 else:
@@ -38,10 +40,9 @@ if __name__ == "__main__":
         else:
             print("Invalid Admin ID or Password.")
     
-    elif user_type == "User":
+    elif user_type == 2:
         user_name = input("Enter your name: ")
-        user_id = input("Enter your User ID: ")
-        user = User(system, user_name, user_id)
+        user = User(system, user_name)
         print(f"Welcome, {user_name}!")
         
         while True:

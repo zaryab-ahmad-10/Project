@@ -1,9 +1,5 @@
-class Admin:
-    def __init__(self, rental_system: CarRentalSystem):
-        self.rental_system = rental_system
-
-    def add_car(self, car: Car):
-        self.rental_system.add_car(car)
-
-    def delete_car(self, car: Car):
-        self.rental_system.delete_car(car)
+class Admin(User):
+    def __init__(self, rental_system: CarRentalSystem, user_name: str, admin_id: int, admin_pass: str):
+        super().__init__(rental_system, user_name)
+        self.admin_id = admin_id
+        self.admin_pass = admin_pass
